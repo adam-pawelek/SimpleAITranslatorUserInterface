@@ -1,0 +1,2 @@
+# SimpleAITranslatorUserInterface
+UI for SimpleAITranslator 
