@@ -11,7 +11,7 @@ set_openai_api_key(os.getenv("OPENAI_API_KEY"))
 st.markdown(
     """
     <style>
-    h1, h2, h3, h4, h5, h6 {
+    h1, h2, h3, h4 {
         text-align: center;
     }
     </style>
@@ -42,7 +42,7 @@ col1, col2 = st.columns(2)
 custom_css = f"""
     <style>
         .non-editable-textarea {{
-            height: 500px;
+            height: 400px;
             overflow-y: auto;
             white-space: pre-wrap;
             border: 1px solid #ccc;
@@ -59,11 +59,23 @@ custom_css = f"""
 
 with col1:
     st.header("Text to translate")
-    text_input_placeholder = st.empty()
+    col1_v1, col1_v2 = st.columns(2)
+    with col1_v1:
+        optionv2 = st.selectbox(
+            "lll",
+            ("Email", "Home phone", "Mobile phone"),
+            index=None,
+            placeholder="Select contact method...",
+            label_visibility="collapsed"
+        )
+    with col1_v2:
+        text_input_placeholder = st.empty()
+
+
 
 
     # Text area for user input
-    txt = st.text_area(label="", label_visibility="collapsed", height=500)
+    txt = st.text_area(label="", label_visibility="collapsed", height=400)
 
     text_input_placeholder.text_input(
         "",
@@ -71,6 +83,8 @@ with col1:
         placeholder="Detected language for translation" if txt is "" else get_text_language(txt),
         label_visibility="collapsed",
     )
+
+    do_translation = st.button("Translate")
 
 with col2:
     st.header("Translated text")
@@ -98,3 +112,40 @@ with col2:
     # Display the text area with the text
     st.markdown(f'<div class="non-editable-textarea">{translated_txt}</div>', unsafe_allow_html=True)
 
+# Footer with two columns for additional information
+# Footer with three sections for additional information
+
+
+
+
+
+import streamlit as st
+
+footer="""<style>
+a:link , a:visited{
+color: blue;
+background-color: transparent;
+text-decoration: underline;
+}
+
+a:hover,  a:active {
+color: red;
+background-color: transparent;
+text-decoration: underline;
+}
+
+.footer {
+position: fixed;
+left: 0;
+bottom: 0;
+width: 100%;
+background-color: white;
+color: black;
+text-align: center;
+}
+</style>
+<div class="footer">
+<p>Check out <a  href="https://github.com/adam-pawelek/SimpleAITranslator" target="_blank">Github</a> and <a  href="https://pypi.org/project/simpleaitranslator/" target="_blank">PYPI Page</a> of this library<br> Developed with ❤ by <a  href="https://www.linkedin.com/in/adam-roman-pawelek/" target="_blank">Adam Pawełek</a></p>
+</div>
+"""
+st.markdown(footer,unsafe_allow_html=True)

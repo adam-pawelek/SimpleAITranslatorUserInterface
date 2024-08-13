@@ -10,6 +10,7 @@ python = "^3.12"
 streamlit = "^1.37.1"
 simpleaitranslator = "^2.1.5"
 python-dotenv = "^1.0.1"
+htbuilder = "^0.6.2"
 
 
 [build-system]
