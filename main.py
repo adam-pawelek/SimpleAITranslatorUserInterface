@@ -1,5 +1,4 @@
 import os
-
 import streamlit as st
 from dotenv import load_dotenv
 from simpleaitranslator.translator import set_openai_api_key, get_text_language, translate
@@ -7,9 +6,20 @@ from simpleaitranslator.translator import set_openai_api_key, get_text_language,
 load_dotenv()
 set_openai_api_key(os.getenv("OPENAI_API_KEY"))
 
-print(get_text_language("Hello world"))  # Output: 'eng'
 
-# Define CSS to adjust the width of the main content area
+# Inject custom CSS to style all headers
+st.markdown(
+    """
+    <style>
+    h1, h2, h3, h4, h5, h6 {
+        text-align: center;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
+
 css = """
 <style>
     .main .block-container {
@@ -24,42 +34,67 @@ css = """
 # Inject the CSS into the Streamlit app
 st.markdown(css, unsafe_allow_html=True)
 
-
-
-
-#set_openai_api_key(os.getenv("OPENAI_API_KEY"))
-
-# Your Streamlit app code goes here
-st.title("Simple AI Translator")
-st.write("This is a simple example of how to change the width of your Streamlit app's page.")
-
-
+st.markdown("<h1 style='text-align: center;'>Simple AI Translator</h1>", unsafe_allow_html=True)
 
 col1, col2 = st.columns(2)
 
+# Define custom CSS to style the div
+custom_css = f"""
+    <style>
+        .non-editable-textarea {{
+            height: 500px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            border: 1px solid #ccc;
+            padding: 10px;
+            background-color: #f0f2f6;
+            border-radius: 5px;
+            margin: -15px 0 0 0 ;
+        }}
+    </style>
+"""
+
+
+
+
 with col1:
-    # Placeholder for the header
-    header_placeholder = st.empty()
+    st.header("Text to translate")
+    text_input_placeholder = st.empty()
+
 
     # Text area for user input
-    txt = st.text_area(label="", label_visibility="collapsed")
+    txt = st.text_area(label="", label_visibility="collapsed", height=500)
 
-    # Update the header with the text area input
-    header_placeholder.header(f"Detected language {get_text_language(txt)}" if txt else "Write here your text for translation")
-
+    text_input_placeholder.text_input(
+        "",
+        disabled=True,
+        placeholder="Detected language for translation" if txt is "" else get_text_language(txt),
+        label_visibility="collapsed",
+    )
 
 with col2:
-    st.header("A dog")
+    st.header("Translated text")
+    option = st.selectbox(
+        "",
+        ("Email", "Home phone", "Mobile phone"),
+        index=None,
+        placeholder="Select contact method...",
+        label_visibility="collapsed"
+    )
+
     if txt:
         language = get_text_language(txt)
         translated_txt = translate(txt)
 
     else:
-        language = "Language not specified"
-        translated_txt = ""
-    col2.write(language)
-    moj = col2.code(
-        translated_txt
-    )
-    col2.write("Translated text:ashfkljsahfjklshakj;fhsa;jlhf;lsafl;ksal;kfsda;ldfsah;jhdsakjfshdakljdhskjhsdafkjhsda;kj")
-    col2.write("asdfsad")
+        translated_txt = "Translation"
+
+   # moj = st.text_area(label="asd",  height=500)
+
+    # Render the CSS in Streamlit
+    # Render the CSS in Streamlit
+    st.markdown(custom_css, unsafe_allow_html=True)
+
+    # Display the text area with the text
+    st.markdown(f'<div class="non-editable-textarea">{translated_txt}</div>', unsafe_allow_html=True)
+
